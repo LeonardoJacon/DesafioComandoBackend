@@ -52,5 +52,6 @@
   "bugs": {
     "url": "https://github.com/joaootdev/teste-xamusco/issues"
   },
-  "homepage": "https://github.com/joaootdev/teste-xamusco#readme"
+  "homepage": "https://github.com/joaootdev/teste-xamusco#readme",
+  "types": "./dist/server.d.ts"
 }
