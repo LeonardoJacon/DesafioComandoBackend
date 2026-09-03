@@ -1,0 +1,231 @@
+{
+  "info": {
+    "name": "API Gestão de Estoque",
+    "description": "Coleção completa para testar todos os endpoints da API de Gestão de Estoque",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3000"
+    },
+    {
+      "key": "categoriaId",
+      "value": ""
+    },
+    {
+      "key": "produtoId",
+      "value": ""
+    },
+    {
+      "key": "movimentacaoId",
+      "value": ""
+    }
+  ],
+  "item": [
+    {
+      "name": "Health Check",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/health"
+      }
+    },
+    {
+      "name": "Categorias",
+      "item": [
+        {
+          "name": "Criar Categoria",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 201) {",
+                  "    const json = pm.response.json();",
+                  "    pm.collectionVariables.set('categoriaId', json.id);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nome\": \"Eletrônicos\"\n}"
+            },
+            "url": "{{baseUrl}}/categorias"
+          }
+        },
+        {
+          "name": "Listar Categorias",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/categorias"
+          }
+        },
+        {
+          "name": "Buscar Categoria por ID",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/categorias/{{categoriaId}}"
+          }
+        },
+        {
+          "name": "Atualizar Categoria",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nome\": \"Eletrônicos e Informática\"\n}"
+            },
+            "url": "{{baseUrl}}/categorias/{{categoriaId}}"
+          }
+        },
+        {
+          "name": "Deletar Categoria",
+          "request": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/categorias/{{categoriaId}}"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Produtos",
+      "item": [
+        {
+          "name": "Criar Produto",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 201) {",
+                  "    const json = pm.response.json();",
+                  "    pm.collectionVariables.set('produtoId', json.id);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nome\": \"Mouse Gamer RGB\",\n  \"sku\": \"MOUSE-001\",\n  \"descricao\": \"Mouse gamer com 7 botões programáveis\",\n  \"preco\": 149.90,\n  \"categoriaId\": \"{{categoriaId}}\"\n}"
+            },
+            "url": "{{baseUrl}}/produtos"
+          }
+        },
+        {
+          "name": "Listar Produtos (Paginado)",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/produtos?page=1&limit=10",
+              "host": ["{{baseUrl}}"],
+              "path": ["produtos"],
+              "query": [
+                { "key": "page", "value": "1" },
+                { "key": "limit", "value": "10" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Buscar Produto por ID",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/produtos/{{produtoId}}"
+          }
+        },
+        {
+          "name": "Atualizar Produto",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nome\": \"Mouse Gamer RGB Pro\",\n  \"preco\": 199.90\n}"
+            },
+            "url": "{{baseUrl}}/produtos/{{produtoId}}"
+          }
+        },
+        {
+          "name": "Deletar Produto",
+          "request": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/produtos/{{produtoId}}"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Movimentações",
+      "item": [
+        {
+          "name": "Registrar Entrada",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 201) {",
+                  "    const json = pm.response.json();",
+                  "    pm.collectionVariables.set('movimentacaoId', json.id);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"tipo\": \"ENTRADA\",\n  \"quantidade\": 50,\n  \"observacao\": \"Compra do fornecedor XYZ\",\n  \"produtoId\": \"{{produtoId}}\"\n}"
+            },
+            "url": "{{baseUrl}}/movimentacoes"
+          }
+        },
+        {
+          "name": "Registrar Saída",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"tipo\": \"SAIDA\",\n  \"quantidade\": 10,\n  \"observacao\": \"Venda para cliente\",\n  \"produtoId\": \"{{produtoId}}\"\n}"
+            },
+            "url": "{{baseUrl}}/movimentacoes"
+          }
+        },
+        {
+          "name": "Listar Movimentações",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/movimentacoes"
+          }
+        },
+        {
+          "name": "Histórico por Produto",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/produtos/{{produtoId}}/movimentacoes"
+          }
+        },
+        {
+          "name": "Cancelar Movimentação",
+          "request": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/movimentacoes/{{movimentacaoId}}"
+          }
+        }
+      ]
+    }
+  ]
+}

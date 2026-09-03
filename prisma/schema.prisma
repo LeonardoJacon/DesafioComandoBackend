@@ -1,0 +1,86 @@
+// =============================================================================
+// SCHEMA PRISMA - Modelagem do Banco de Dados
+// =============================================================================
+// Este arquivo define as tabelas, relacionamentos e tipos do PostgreSQL.
+// O Prisma gera automaticamente um client TypeScript tipado a partir daqui.
+// =============================================================================
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// -----------------------------------------------------------------------------
+// CATEGORIA
+// Agrupa produtos por tipo (ex: Eletrônicos, Alimentos, etc.)
+// Relacionamento 1:N com Produto (uma categoria pode ter vários produtos)
+// -----------------------------------------------------------------------------
+model Categoria {
+  id        String    @id @default(uuid())
+  nome      String    @unique
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+
+  // Relacionamento: uma categoria possui muitos produtos
+  produtos Produto[]
+
+  @@map("categorias")
+}
+
+// -----------------------------------------------------------------------------
+// PRODUTO
+// Representa um item do estoque com SKU único e quantidade controlada
+// O estoque SÓ pode ser alterado via Movimentacao (nunca diretamente no PUT)
+// -----------------------------------------------------------------------------
+model Produto {
+  id                String   @id @default(uuid())
+  nome              String
+  sku               String   @unique // SKU deve ser único (regra de negócio)
+  descricao         String?
+  preco             Decimal  @db.Decimal(10, 2)
+  quantidadeEstoque Int      @default(0) @map("quantidade_estoque") // Sempre inicia em 0
+  categoriaId       String   @map("categoria_id")
+  createdAt         DateTime @default(now()) @map("created_at")
+  updatedAt         DateTime @updatedAt @map("updated_at")
+
+  // Relacionamento: cada produto pertence a uma categoria
+  categoria     Categoria      @relation(fields: [categoriaId], references: [id])
+  // Relacionamento: um produto pode ter várias movimentações
+  movimentacoes Movimentacao[]
+
+  @@map("produtos")
+}
+
+// -----------------------------------------------------------------------------
+// TIPO DE MOVIMENTAÇÃO
+// Enum que define se é entrada (aumenta estoque) ou saída (diminui estoque)
+// -----------------------------------------------------------------------------
+enum TipoMovimentacao {
+  ENTRADA
+  SAIDA
+}
+
+// -----------------------------------------------------------------------------
+// MOVIMENTAÇÃO
+// Registra cada entrada ou saída de estoque de um produto
+// O campo "cancelada" permite reverter o impacto sem apagar o histórico
+// -----------------------------------------------------------------------------
+model Movimentacao {
+  id         String           @id @default(uuid())
+  tipo       TipoMovimentacao
+  quantidade Int
+  observacao String?
+  cancelada  Boolean          @default(false) // Quando true, o estoque foi revertido
+  produtoId  String           @map("produto_id")
+  createdAt  DateTime         @default(now()) @map("created_at")
+  updatedAt  DateTime         @updatedAt @map("updated_at")
+
+  // Relacionamento: cada movimentação pertence a um produto
+  produto Produto @relation(fields: [produtoId], references: [id])
+
+  @@map("movimentacoes")
+}
