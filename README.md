@@ -10,6 +10,7 @@ API RESTful para gerenciamento de produtos, categorias e movimentações de esto
 - PostgreSQL
 - Docker & Docker Compose
 - Zod (validação)
+- JWT e bcrypt (autenticação)
 
 ## Pré-requisitos
 
@@ -50,10 +51,24 @@ npx prisma migrate deploy
 npm run dev
 ```
 
+Para abrir o Prisma Studio usando o mesmo banco da API:
+
+```bash
+docker-compose --profile tools up --build -d studio
+```
+
+Acesse **http://localhost:5555**. Para encerrar o Studio:
+
+```bash
+docker-compose --profile tools down
+```
+
 ## Endpoints
 
 | Método | Rota | Descrição |
 |--------|------|-----------|
+| POST | `/auth/register` | Cadastrar usuário |
+| POST | `/auth/login` | Autenticar usuário e gerar token JWT |
 | POST | `/categorias` | Criar categoria |
 | GET | `/categorias` | Listar categorias |
 | GET | `/categorias/:id` | Buscar categoria |
@@ -86,4 +101,4 @@ Importe o arquivo `postman/Gestao-Estoque.postman_collection.json` no Postman ou
 | `npm run dev` | Desenvolvimento com hot-reload |
 | `npm run build` | Compila TypeScript |
 | `npm start` | Produção |
-| `npm run prisma:studio` | Interface visual do banco |
+| `npm run prisma:studio` | Interface visual do banco (execução local) |

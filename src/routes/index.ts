@@ -3,10 +3,12 @@ import { Container } from "../container";
 import { createCategoriaRoutes } from "./categoria.routes";
 import { createProdutoRoutes } from "./produto.routes";
 import { createMovimentacaoRoutes } from "./movimentacao.routes";
+import { createAuthRoutes } from "./authRoutes";
 
 export function createRoutes(container: Container): Router {
   const router = Router();
 
+  router.use("/auth", createAuthRoutes(container.authController));
   router.use("/categorias", createCategoriaRoutes(container.categoriaController));
   router.use(
     "/produtos",

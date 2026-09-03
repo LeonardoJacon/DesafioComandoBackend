@@ -39,6 +39,14 @@ Para um projeto deste porte, um container manual é mais explícito, não adicio
 Categoria (1) ──────< (N) Produto (1) ──────< (N) Movimentacao
 ```
 
+### Usuários e autenticação
+
+A autenticação foi adicionada com a entidade `Usuario`, que não possui relação
+direta com as entidades de estoque. As senhas são armazenadas com hash usando
+bcrypt e o login retorna um token JWT. O fluxo está disponível em
+`POST /auth/register` e `POST /auth/login`; o segredo e a duração do token são
+configurados por variáveis de ambiente (`JWT_SECRET` e `JWT_EXPIRES_IN`).
+
 ### Tabela: `categorias`
 
 | Campo | Tipo | Observação |
@@ -123,9 +131,6 @@ Implementada com `skip/take` do Prisma e retorno de metadados (`total`, `totalPa
 
 ## 6. Melhorias Futuras (não implementadas)
 
-- Autenticação e autorização (JWT)
 - Testes automatizados (Jest/Vitest)
-- Rate limiting
-- Logs estruturados (Winston/Pino)
-- Documentação OpenAPI/Swagger
 - Índices adicionais para consultas frequentes
+- Aplicar o middleware JWT às rotas que exigem autenticação

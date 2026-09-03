@@ -8,7 +8,8 @@ import { MovimentacaoService } from "../services/MovimentacaoService";
 import { CategoriaController } from "../controllers/CategoriaController";
 import { ProdutoController } from "../controllers/ProdutoController";
 import { MovimentacaoController } from "../controllers/MovimentacaoController";
-
+import { AuthService } from "../services/authService";
+import { AuthController } from "../controllers/AuthController";
 export class Container {
   private readonly categoriaRepository = new CategoriaRepository(prisma);
   private readonly produtoRepository = new ProdutoRepository(prisma);
@@ -23,6 +24,8 @@ export class Container {
     this.movimentacaoRepository,
     this.produtoRepository
   );
+  private readonly authService = new AuthService(prisma);
+  readonly authController = new AuthController(this.authService);
 
   readonly categoriaController = new CategoriaController(this.categoriaService);
   readonly produtoController = new ProdutoController(this.produtoService);

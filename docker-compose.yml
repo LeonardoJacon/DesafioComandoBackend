@@ -34,5 +34,20 @@ services:
       db:
         condition: service_healthy
 
+  studio:
+    profiles: ["tools"]
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: builder
+    command: npx prisma studio --hostname 0.0.0.0 --port 5555 --browser none
+    environment:
+      DATABASE_URL: postgresql://postgres:postgres@db:5432/gestao_estoque?schema=public
+    ports:
+      - "5555:5555"
+    depends_on:
+      db:
+        condition: service_healthy
+
 volumes:
   postgres_data:

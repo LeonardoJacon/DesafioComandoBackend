@@ -41,6 +41,15 @@ enum TipoMovimentacao {
   SAIDA
 }
 
+model Usuario {
+id             String @id @default(uuid())
+nome           String @default("Usuário")
+email          String @unique
+senha          String 
+createdAt      DateTime @default(now()) @map("created_at")
+updatedAt      DateTime @updatedAt @map("updated_at")
+
+}
 
 model Movimentacao {
   id         String           @id @default(uuid())
