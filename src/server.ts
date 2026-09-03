@@ -1,9 +1,3 @@
-// =============================================================================
-// PONTO DE ENTRADA DA APLICAÇÃO (SERVER)
-// =============================================================================
-// Inicia o servidor HTTP na porta configurada nas variáveis de ambiente.
-// =============================================================================
-
 import { createApp } from "./app";
 import { env } from "./config/env";
 import { prisma } from "./database/prisma";
@@ -12,7 +6,6 @@ const app = createApp();
 
 async function bootstrap() {
   try {
-    // Testa a conexão com o banco antes de subir o servidor
     await prisma.$connect();
     console.log("✅ Conectado ao banco de dados PostgreSQL");
 
@@ -26,7 +19,6 @@ async function bootstrap() {
   }
 }
 
-// Encerra conexões gracefully ao receber SIGTERM (ex: docker stop)
 process.on("SIGTERM", async () => {
   console.log("Encerrando aplicação...");
   await prisma.$disconnect();

@@ -1,10 +1,3 @@
-// =============================================================================
-// MIDDLEWARE GLOBAL DE TRATAMENTO DE ERROS
-// =============================================================================
-// Captura qualquer erro lançado nos controllers/services e retorna JSON padronizado.
-// Deve ser o ÚLTIMO middleware registrado no Express.
-// =============================================================================
-
 import { Request, Response, NextFunction } from "express";
 import { Prisma } from "@prisma/client";
 import { AppError } from "../errors/AppError";
@@ -16,7 +9,6 @@ export function errorHandler(
   res: Response,
   _next: NextFunction
 ): void {
-  // Erros de negócio conhecidos (lançados via AppError)
   if (err instanceof AppError) {
     res.status(err.statusCode).json({
       status: "error",
@@ -25,7 +17,6 @@ export function errorHandler(
     return;
   }
 
-  // Erros de constraint do Prisma (ex: SKU duplicado no banco)
   if (err instanceof Prisma.PrismaClientKnownRequestError) {
     if (err.code === "P2002") {
       const campo = (err.meta?.target as string[])?.join(", ") || "campo";
@@ -45,7 +36,6 @@ export function errorHandler(
     }
   }
 
-  // Erro inesperado — loga no servidor e retorna mensagem genérica
   console.error("[ERRO INTERNO]", err);
 
   res.status(500).json({

@@ -1,7 +1,3 @@
-// =============================================================================
-// ROTAS DE CATEGORIAS
-// =============================================================================
-
 import { Router } from "express";
 import { CategoriaController } from "../controllers/CategoriaController";
 import { validate } from "../middleware/validate";

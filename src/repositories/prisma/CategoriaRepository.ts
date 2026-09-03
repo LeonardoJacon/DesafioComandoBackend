@@ -1,9 +1,3 @@
-// =============================================================================
-// REPOSITÓRIO DE CATEGORIAS (Implementação Prisma)
-// =============================================================================
-// Camada de acesso a dados: apenas operações no banco, sem regras de negócio.
-// =============================================================================
-
 import { PrismaClient } from "@prisma/client";
 import {
   ICategoriaRepository,

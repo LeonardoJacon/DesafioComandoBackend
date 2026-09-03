@@ -1,10 +1,3 @@
-// =============================================================================
-// SERVICE DE CATEGORIAS
-// =============================================================================
-// Contém as REGRAS DE NEGÓCIO relacionadas a categorias.
-// Não conhece HTTP (req/res) — apenas recebe dados e retorna resultados.
-// =============================================================================
-
 import { AppError } from "../errors/AppError";
 import { ICategoriaRepository } from "../repositories/interfaces/ICategoriaRepository";
 import { CreateCategoriaInput, UpdateCategoriaInput } from "../schemas/categoria.schema";
@@ -13,7 +6,6 @@ export class CategoriaService {
   constructor(private readonly categoriaRepository: ICategoriaRepository) {}
 
   async criar(data: CreateCategoriaInput) {
-    // Verifica se já existe categoria com o mesmo nome
     const existente = await this.categoriaRepository.findByNome(data.nome);
     if (existente) {
       throw new AppError("Já existe uma categoria com este nome", 409);
@@ -35,9 +27,8 @@ export class CategoriaService {
   }
 
   async atualizar(id: string, data: UpdateCategoriaInput) {
-    await this.buscarPorId(id); // Garante que existe
+    await this.buscarPorId(id); 
 
-    // Verifica duplicidade de nome (exceto a própria categoria)
     const existente = await this.categoriaRepository.findByNome(data.nome);
     if (existente && existente.id !== id) {
       throw new AppError("Já existe uma categoria com este nome", 409);
@@ -49,7 +40,7 @@ export class CategoriaService {
   async deletar(id: string) {
     await this.buscarPorId(id);
 
-    // Regra: não permitir exclusão se houver produtos vinculados
+
     const quantidadeProdutos = await this.categoriaRepository.countProdutos(id);
     if (quantidadeProdutos > 0) {
       throw new AppError(

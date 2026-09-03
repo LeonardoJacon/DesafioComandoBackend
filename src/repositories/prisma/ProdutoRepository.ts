@@ -1,7 +1,3 @@
-// =============================================================================
-// REPOSITÓRIO DE PRODUTOS (Implementação Prisma)
-// =============================================================================
-
 import { PrismaClient } from "@prisma/client";
 import {
   IProdutoRepository,
@@ -13,11 +9,9 @@ import {
 export class ProdutoRepository implements IProdutoRepository {
   constructor(private readonly prisma: PrismaClient) {}
 
-  /** Include padrão: traz a categoria junto com o produto */
   private readonly includeCategoria = { categoria: true } as const;
 
   async create(data: CreateProdutoData) {
-    // quantidadeEstoque não é passado — o default do schema é 0
     return this.prisma.produto.create({
       data: {
         nome: data.nome,
@@ -32,8 +26,6 @@ export class ProdutoRepository implements IProdutoRepository {
 
   async findAllPaginated({ page, limit }: PaginationParams) {
     const skip = (page - 1) * limit;
-
-    // Executa contagem e busca em paralelo para melhor performance
     const [data, total] = await Promise.all([
       this.prisma.produto.findMany({
         skip,

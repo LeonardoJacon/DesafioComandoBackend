@@ -1,10 +1,3 @@
-// =============================================================================
-// CONTROLLER DE CATEGORIAS
-// =============================================================================
-// Camada HTTP: recebe requisições, chama o service e devolve respostas JSON.
-// Não contém regras de negócio — apenas orquestra req → service → res.
-// =============================================================================
-
 import { Request, Response, NextFunction } from "express";
 import { CategoriaService } from "../services/CategoriaService";
 

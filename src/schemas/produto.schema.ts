@@ -1,10 +1,5 @@
-// =============================================================================
-// SCHEMAS DE VALIDAÇÃO - PRODUTOS (Zod)
-// =============================================================================
-
 import { z } from "zod";
 
-/** Validação para criar produto */
 export const createProdutoSchema = z
   .object({
     nome: z
@@ -24,13 +19,10 @@ export const createProdutoSchema = z
       .positive("Preço deve ser maior que zero"),
     categoriaId: z.string().uuid("categoriaId deve ser um UUID válido"),
   })
-  // Regra: não permitir enviar quantidade_estoque no corpo da requisição
   .strict()
   .refine((data) => !("quantidadeEstoque" in data) && !("quantidade_estoque" in data), {
     message: "Não é permitido definir estoque na criação do produto. O estoque inicial é sempre 0.",
   });
-
-/** Validação para atualizar produto */
 export const updateProdutoSchema = z
   .object({
     nome: z.string().min(2).max(200).trim().optional(),
@@ -39,12 +31,10 @@ export const updateProdutoSchema = z
     categoriaId: z.string().uuid().optional(),
   })
   .strict()
-  // Regra: bloquear atualização manual do estoque via PUT
   .refine((data) => !("quantidadeEstoque" in data) && !("quantidade_estoque" in data), {
     message: "Não é permitido atualizar quantidade_estoque manualmente. Use movimentações.",
   });
 
-/** Validação dos query params de paginação */
 export const paginationQuerySchema = z.object({
   page: z.coerce.number().int().min(1).default(1),
   limit: z.coerce.number().int().min(1).max(100).default(10),

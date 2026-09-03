@@ -1,9 +1,3 @@
-// =============================================================================
-// REPOSITÓRIO DE MOVIMENTAÇÕES (Implementação Prisma)
-// =============================================================================
-// Usa transações do Prisma para garantir atomicidade entre movimentação e estoque.
-// =============================================================================
-
 import { PrismaClient } from "@prisma/client";
 import {
   IMovimentacaoRepository,
@@ -52,10 +46,6 @@ export class MovimentacaoRepository implements IMovimentacaoRepository {
     });
   }
 
-  /**
-   * Transação atômica: cria movimentação E atualiza estoque do produto.
-   * Se qualquer operação falhar, ambas são revertidas (rollback).
-   */
   async createWithEstoqueUpdate(data: CreateMovimentacaoData, novoEstoque: number) {
     return this.prisma.$transaction(async (tx) => {
       const movimentacao = await tx.movimentacao.create({
@@ -72,9 +62,7 @@ export class MovimentacaoRepository implements IMovimentacaoRepository {
     });
   }
 
-  /**
-   * Transação atômica: cancela movimentação E reverte o estoque.
-   */
+
   async cancelarWithEstoqueRevert(id: string, novoEstoque: number) {
     return this.prisma.$transaction(async (tx) => {
       const movimentacao = await tx.movimentacao.findUnique({

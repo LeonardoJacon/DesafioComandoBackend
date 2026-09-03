@@ -1,11 +1,5 @@
-# =============================================================================
-# DOCKER COMPOSE - Orquestração dos containers
-# =============================================================================
-# Sobe o PostgreSQL e a API juntos com uma única comando: docker-compose up
-# =============================================================================
 
 services:
-  # --- Banco de Dados PostgreSQL ---
   db:
     image: postgres:16-alpine
     container_name: gestao-estoque-db
@@ -17,7 +11,6 @@ services:
     ports:
       - "5432:5432"
     volumes:
-      # Persiste os dados do banco mesmo após parar o container
       - postgres_data:/var/lib/postgresql/data
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U postgres -d gestao_estoque"]
@@ -25,7 +18,6 @@ services:
       timeout: 5s
       retries: 5
 
-  # --- API Node.js ---
   api:
     build:
       context: .

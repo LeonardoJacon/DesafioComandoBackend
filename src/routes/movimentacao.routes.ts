@@ -1,7 +1,3 @@
-// =============================================================================
-// ROTAS DE MOVIMENTAÇÕES
-// =============================================================================
-
 import { Router } from "express";
 import { MovimentacaoController } from "../controllers/MovimentacaoController";
 import { validate } from "../middleware/validate";

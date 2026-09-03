@@ -1,15 +1,9 @@
-// =============================================================================
-// SCHEMAS DE VALIDAÇÃO - MOVIMENTAÇÕES (Zod)
-// =============================================================================
-
 import { z } from "zod";
 
-/** Tipos aceitos de movimentação */
 export const tipoMovimentacaoEnum = z.enum(["ENTRADA", "SAIDA"], {
   errorMap: () => ({ message: "Tipo deve ser ENTRADA ou SAIDA" }),
 });
 
-/** Validação para registrar uma movimentação */
 export const createMovimentacaoSchema = z.object({
   tipo: tipoMovimentacaoEnum,
   quantidade: z

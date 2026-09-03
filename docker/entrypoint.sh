@@ -1,9 +1,4 @@
 #!/bin/sh
-# =============================================================================
-# ENTRYPOINT - Script de inicialização do container da API
-# =============================================================================
-# Aguarda o PostgreSQL ficar disponível, executa as migrations e inicia a API
-# =============================================================================
 
 set -e
 

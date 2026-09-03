@@ -1,7 +1,3 @@
-// =============================================================================
-// CONTROLLER DE MOVIMENTAÇÕES
-// =============================================================================
-
 import { Request, Response, NextFunction } from "express";
 import { MovimentacaoService } from "../services/MovimentacaoService";
 

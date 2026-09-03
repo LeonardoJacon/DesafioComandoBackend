@@ -1,7 +1,3 @@
-// =============================================================================
-// ROTAS DE PRODUTOS
-// =============================================================================
-
 import { Router } from "express";
 import { ProdutoController } from "../controllers/ProdutoController";
 import { MovimentacaoController } from "../controllers/MovimentacaoController";
@@ -30,7 +26,6 @@ export function createProdutoRoutes(
   );
   router.delete("/:id", validate(idParamSchema, "params"), produtoController.deletar);
 
-  // Histórico de movimentações de um produto específico
   router.get(
     "/:id/movimentacoes",
     validate(idParamSchema, "params"),

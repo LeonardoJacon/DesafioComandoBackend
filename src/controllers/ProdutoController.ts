@@ -1,7 +1,3 @@
-// =============================================================================
-// CONTROLLER DE PRODUTOS
-// =============================================================================
-
 import { Request, Response, NextFunction } from "express";
 import { ProdutoService } from "../services/ProdutoService";
 
