@@ -30,6 +30,7 @@ services:
       DATABASE_URL: postgresql://postgres:postgres@db:5432/gestao_estoque?schema=public
       PORT: 3000
       NODE_ENV: production
+      JWT_SECRET: chavechavosa
     depends_on:
       db:
         condition: service_healthy
